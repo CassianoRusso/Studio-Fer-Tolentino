@@ -15,7 +15,6 @@ var calendar = $('#calendar').fullCalendar({
 		center: 'title',
 		right: 'month,agendaWeek,agendaDay,listMonth'
 	},
-	initialDate: new Date(),
 	navLinks: true,
 	editable: false,
 	dayMaxEvents: true,

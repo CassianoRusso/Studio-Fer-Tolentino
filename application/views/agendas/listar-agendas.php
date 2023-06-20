@@ -58,7 +58,7 @@
                     $assunto = str_replace("'", "&#39;",$agenda->agenda_assunto);
                     $assunto = str_replace('"', '\&#34;',$agenda->agenda_assunto);
                     
-                    $eventos = $eventos.',{"id":"'.$agenda->agenda_id.'", "title":"'.$assunto.'", "start":"'.implode('-', array_reverse(explode('/', $agenda->agenda_data))).'T'.$agenda->agenda_horario_inicial.'", "end":"'.implode('-', array_reverse(explode('/', $agenda->agenda_data))).'T'.$agenda->agenda_horario_final.'", "url":"'.base_url("detalhes-agenda/" . $agenda->agenda_id).'"}';
+                    $eventos = $eventos.',{"id":"'.$agenda->agenda_id.'", "title":"'.$assunto.'", "start":"'.implode('-', array_reverse(explode('/', $agenda->agenda_data))).'T'.$agenda->agenda_horario_inicial.'", "end":"'.implode('-', array_reverse(explode('/', $agenda->agenda_data))).'T'.$agenda->agenda_horario_final.'", "url":"'.base_url("detalhes-agenda/" . $agenda->agenda_id).'", "backgroundColor": "#f76fbb", "borderColor": "#f76fbb", "textColor": "#fff"}';
                     
                   }
 
