@@ -11,6 +11,8 @@ class Usuarios extends CI_Controller{
             $this->session->set_flashdata('info', 'Sua sessão expirou.');
             redirect('login');
         }
+
+        $this->load->model("Core_model", "model");
         
     }
     
@@ -50,10 +52,12 @@ class Usuarios extends CI_Controller{
                 'username' => $dados["username"],
                 'active' => $dados["active"]
             );
+            $group = array(
+                'group_id' => 1
+            );
 
             $email = $this->security->xss_clean($dados["email"]);
             $username = $this->security->xss_clean($dados["username"]);
-            $group = 1;
             $password = $this->security->xss_clean($dados["password"]);
 
             $additional_data = $this->security->xss_clean($additional_data);
@@ -140,20 +144,17 @@ class Usuarios extends CI_Controller{
                 $this->load->view('layout/footer', $data);
             }
             
-        }
-        
-        
+        }        
         
     }
 
     public function deletar($usuario_id){
-
+        
         if(!$usuario_id || !$this->ion_auth->user($usuario_id)->row()){
             $this->session->set_flashdata('erro', 'Usuário não existe.');
             redirect(base_url('usuarios'));
 
         }
-        
         if($this->ion_auth->is_admin($usuario_id)){
             $this->session->set_flashdata('erro', 'O Administrador não pode ser excluido.');
             redirect(base_url('usuarios'));
@@ -171,9 +172,9 @@ class Usuarios extends CI_Controller{
 
     public function email_check($email){
 
-        $usuario_id = $this->input->post('usuario_id');
+        $usuario_id = $this->input->post('id');
 
-        if($this->Core_model->get_by_id('users', array('email' => $email, 'id !=' => $usuario_id))){
+        if($this->model->get_by_id('users', array('email' => $email, 'id !=' => $usuario_id))){
             
             $this->form_validation->set_message('email_check', 'Esse e-mail já existe.');
             return false;
@@ -186,9 +187,9 @@ class Usuarios extends CI_Controller{
     }
 
     public function username_check($username){
-        $usuario_id = $this->input->post('usuario_id');
+        $usuario_id = $this->input->post('id');
 
-        if($this->Core_model->get_by_id('users', array('username' => $username, 'id !=' => $usuario_id))){
+        if($this->model->get_by_id('users', array('username' => $username, 'id !=' => $usuario_id))){
             
             $this->form_validation->set_message('username_check', 'Esse usuário já existe.');
             return false;

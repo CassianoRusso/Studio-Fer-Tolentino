@@ -22,6 +22,8 @@
           <form method="POST">
             <div class="card-body">
                 <div class="form-row">
+                    <input type="hidden" name="id" value="<?php echo $usuario->id; ?>">
+
                     <div class="form-group col-6">
                         <label>Nome</label>
                         <input type="text" id="first_name" name="first_name" class="form-control" style="text-transform: capitalize;" value="<?php echo $usuario->first_name; ?>">
