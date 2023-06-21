@@ -53,11 +53,12 @@
                       <th>Produto / Serviço</th>
                       <th>Valor</th>
                       <th>Dia e Horário</th>
+                      <th>Ação</th>
                     </tr>
                   </thead>
                   <tbody>
                     <?php foreach($caixa as $cx){ ?>
-                      <tr>
+                      <tr href="<?php echo base_url(); ?>">
                         <td class="text-center col-1"><?php echo $cx->caixa_id; ?></td>
                         <td class="col-3">
                           <?php if(empty($cx->clientes_cliente_id)){ ?>
@@ -103,6 +104,11 @@
                           </strong>
                         </td>
                         <td class="col-2"><?php echo formata_data_banco_com_hora($cx->caixa_data); ?></td>
+                        <td class="col-2">
+                          <a href="<?php echo base_url('detalhes-caixa/'.$cx->caixa_id); ?>" class="btn btn-warning user-img-radious-style" style="line-height: 1.5; letter-spacing: 0;" data-toggle="tooltip" data-original-title="+ informações">
+                            <i class="fas fa-info"></i>
+                          </a>
+                        </td>
                       </tr>
                     <?php } ?>
                   </tbody>

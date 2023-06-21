@@ -86,6 +86,13 @@
                   </div>
                 </div>
 
+                <div class="form-row">
+                    <div class="form-group col-12">
+                        <label>Descrição</label>
+                        <textarea name="caixa_descricao" class="summernote form-control"><?php echo set_value('caixa_descricao'); ?></textarea>
+                    </div>
+                </div>
+
                 <input type="hidden" name="caixa_data" class="form-control" value="<?php echo (date('Y-m-d H:i')); ?>">
                     
             </div>

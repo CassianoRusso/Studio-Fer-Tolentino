@@ -77,11 +77,12 @@ $route['editar-agenda/(:num)'] = 'Agendas/editar/$1';
 $route['detalhes-agenda/(:num)'] = 'Agendas/detalhes/$1';
 $route['deletar-agenda/(:num)'] = 'Agendas/deletar/$1';
 $route['listar-notificacoes'] = 'Agendas/notificacoes';
-$route['agenda-finalizar/(:num)'] = 'Agendas/registrar/$1';
+$route['agenda-finalizar/(:num)'] = 'Agendas/finalizar/$1';
 
 // Caixa - Financeiro
 $route['historico'] = 'Caixa/index';
 $route['registrar-caixa'] = 'Caixa/registrar';
+$route['detalhes-caixa/(:num)'] = 'Caixa/detalhes/$1';
 
 // Usuarios - Configurações
 $route['usuarios'] = 'Usuarios/index';

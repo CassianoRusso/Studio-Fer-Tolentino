@@ -3,6 +3,25 @@
 defined('BASEPATH') OR exit('Ação não permitida');
 
 class Caixa_model extends CI_Model{
+  
+    public function get_by_id($tabela = null, $condicao = null){
+        if($tabela){
+
+            if(is_array($condicao)){
+
+            $this->db->where($condicao);
+            $this->db->limit(1);
+            
+            }
+            return $this->db->get($tabela)->row();
+
+        }else{
+
+            return false;
+
+        }
+
+    }
 
     public function caixa($tabela = null, $condicao = null){
         if($tabela){

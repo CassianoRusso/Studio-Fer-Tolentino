@@ -42,13 +42,22 @@
                         </select>
                     </div>
 
-                    <div class="form-group col-6">
+                    <div class="form-group col-4">
                         <label>Serviço</label>
                         <select name="servicos_servico_id" class="form-control selectric" value="<?php echo set_value('servicos_servico_id'); ?>">
                           <option value="0">Selecione um serviço</option>
                           <?php foreach($servicos as $servico){ ?>  
                             <option value="<?php echo $servico->servico_id; ?>"><?php echo $servico->servico_nome; ?></option>
                           <?php } ?>
+                        </select>
+                        <input type="hidden" name="agenda_status_servico" value="0">
+                    </div>
+
+                    <div class="form-group col-2">
+                        <label>Status de pagamento</label>
+                        <select name="agenda_status_pagamento" class="form-control selectric" value="<?php echo set_value('agenda_status_pagamento'); ?>">
+                          <option value="0">Não pago</option>
+                          <option value="1">Pago</option>
                         </select>
                         <input type="hidden" name="agenda_status_servico" value="0">
                     </div>

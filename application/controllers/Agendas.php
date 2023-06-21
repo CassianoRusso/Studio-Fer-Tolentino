@@ -18,7 +18,7 @@ class Agendas extends CI_Controller{
     public function index(){
         $data = array(
             'titulo' => 'Lista de Agendamentos',
-            'pagina' => 'listar-agendas',
+            'pagina' => 'agendas',
             'usuario' => $user = $this->ion_auth->user()->row(),
             'agendas' => $this->model->agenda('agenda'),
             'servicos' => $this->model->servicos('servicos', array('servico_ativo' => 1)),
@@ -34,9 +34,11 @@ class Agendas extends CI_Controller{
     }
 
     public function cadastrar(){
+        date_default_timezone_set('America/Sao_Paulo');
+
         $data = array(
             'titulo' => 'Cadastrar na agenda',
-            'pagina' => 'cadastrar-agenda',
+            'pagina' => 'agendas',
             'usuario' => $user = $this->ion_auth->user()->row(),
             'servicos' => $this->model->servicos('servicos', array('servico_ativo' => 1)),
             'clientes' => $this->model->clientes('clientes', array('cliente_ativo' => 1)),
@@ -64,6 +66,12 @@ class Agendas extends CI_Controller{
             
             if($this->model->cadastrar('agenda', $dados)){
                 $this->session->set_flashdata('sucesso', 'Horário agendado com sucesso!');
+                
+                if($dados["agenda_status_pagamento"] == 1){
+                    $agenda_id = $this->model->agenda_cadastrada('agenda');
+                    $this->registrar_caixa($agenda_id->agenda_id);
+                }
+                
             }
             
             redirect(base_url('listar-agendas'));
@@ -77,9 +85,11 @@ class Agendas extends CI_Controller{
     }
 
     public function editar($agenda_id){
+        date_default_timezone_set('America/Sao_Paulo');
+
         $data = array(
             'titulo' => 'Editar agenda',
-            'pagina' => 'editar-agenda',
+            'pagina' => 'agendas',
             'usuario' => $user = $this->ion_auth->user()->row(),
             'agendas' => $this->model->get_by_id('agenda', array('agenda_id' => $agenda_id)),
             'servicos' => $this->model->servicos('servicos', array('servico_ativo' => 1)),
@@ -102,13 +112,16 @@ class Agendas extends CI_Controller{
             if($dados["servicos_servico_id"] == 0){
                 unset($dados["servicos_servico_id"]);
             }
-            
+            if($dados["agenda_status_pagamento"] == 1){
+                $this->registrar_caixa($agenda_id);
+            }
+
             extract($dados);
             
             $dados["agenda_descricao"] = ucfirst($agenda_descricao);
             
             if($this->model->editar('agenda', $dados, array('agenda_id' => $agenda_id))){
-            $this->session->set_flashdata('sucesso', 'Agenda atualizada com sucesso!');
+                $this->session->set_flashdata('sucesso', 'Agenda atualizada com sucesso!');
             }
             
             redirect(base_url("listar-agendas"));
@@ -122,7 +135,7 @@ class Agendas extends CI_Controller{
 
     public function deletar($agenda_id){
 
-        if($this->model->delete('agenda', array('agenda_id' => $agenda_id))){
+        if($this->model->deletar('agenda', array('agenda_id' => $agenda_id))){
             $this->session->set_flashdata('sucesso', 'agenda excluído com sucesso!');
         }
 
@@ -138,7 +151,7 @@ class Agendas extends CI_Controller{
 
         $data = array(
             'titulo' => 'Detalhes do agendamento',
-            'pagina' => 'detalhes-agenda',
+            'pagina' => 'agendas',
             'usuario' => $user = $this->ion_auth->user()->row(),
             'agenda' => $this->model->get_by_id('agenda', array('agenda_id' => $agenda_id)),
             'servico' => $this->model->get_by_id('servicos', array('servico_id' => $servico)),
@@ -160,15 +173,16 @@ class Agendas extends CI_Controller{
             
             if($dados_agenda->agenda_horario_inicial >= $hora_atual){
                 $tempo = gmdate('H:i', strtotime( $dados_agenda->agenda_horario_inicial ) - strtotime( $hora_atual ) );
-                
-                if($tempo <= '00:30'){
+                if($tempo <= '00:15'){
+                    $dados_agenda->agenda_notificacao = 3;
+                    $this->model->editar_notificacao($dados_agenda);
+
+                } elseif($tempo <= '00:30'){
                     $dados_agenda->agenda_notificacao = 2;
                     $this->model->editar_notificacao($dados_agenda);
 
-                } elseif($tempo <= '00:15'){
-                    $dados_agenda->agenda_notificacao = 3;
-                    $this->model->editar_notificacao($dados_agenda);
                 }
+                
             }else{
                 $dados_agenda->agenda_notificacao = 3;
                 $this->model->editar_notificacao($dados_agenda);
@@ -180,7 +194,43 @@ class Agendas extends CI_Controller{
         $this->load->view('layout/footer');
     }
 
-    public function registrar($agenda_id){
+    public function finalizar($agenda_id){
+        date_default_timezone_set('America/Sao_Paulo');
+
+        $dados_agenda = $this->model->get_by_id('agenda', array('agenda_id' => $agenda_id));
+        $dados_servico = $this->model->get_by_id('servicos',array('servico_id' => $dados_agenda->servicos_servico_id));
+        
+        if($dados_agenda->agenda_status_pagamento == 0){
+            $caixa_valor = $dados_servico->servico_valor;
+            $caixa_data = date('Y-m-d H:i');
+            $caixa_status = 1;
+            $servicos_servico_id = $dados_agenda->servicos_servico_id;
+            $clientes_cliente_id = $dados_agenda->clientes_cliente_id;
+            
+            $dados = array(
+                'caixa_valor' => $caixa_valor,
+                'caixa_data' => $caixa_data,
+                'caixa_status' => $caixa_status,
+                'servicos_servico_id' => $servicos_servico_id,
+                'clientes_cliente_id' => $clientes_cliente_id
+            );    
+        }
+
+        if(isset($dados)){
+            if($this->model->cadastrar('caixa', $dados)){
+                $this->model->finalizar_servico($agenda_id);
+                $this->session->set_flashdata('sucesso', 'Serviço finalizado e valor registrado no caixa!');
+            }
+        }else{
+            $this->model->finalizar_servico($agenda_id);
+            $this->session->set_flashdata('sucesso', 'Serviço finalizado!');
+        }
+        
+        redirect(base_url('listar-agendas'));
+        
+    }
+
+    public function registrar_caixa($agenda_id){
         date_default_timezone_set('America/Sao_Paulo');
 
         $dados_agenda = $this->model->get_by_id('agenda', array('agenda_id' => $agenda_id));
@@ -201,12 +251,8 @@ class Agendas extends CI_Controller{
         );    
         
         if($this->model->cadastrar('caixa', $dados)){
-            $this->model->finalizar_servico($agenda_id);
-            $this->session->set_flashdata('sucesso', 'Serviço finalizado e valor registrado no caixa!');
+            return true;
         }
-        
-        redirect(base_url('listar-agendas'));
-
         
     }
 

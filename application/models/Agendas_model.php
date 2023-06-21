@@ -58,6 +58,18 @@ class Agendas_model extends CI_Model{
           }
     }
 
+    public function agenda_cadastrada($tabela = null){
+      if($tabela){
+
+        return $this->db->query(" SELECT agenda_id FROM $tabela ORDER BY agenda_id DESC")->row();
+
+      }else{
+  
+        return false;
+  
+      }
+  }
+
     public function clientes($tabela = null, $condicao = null){
         if($tabela){
 
@@ -127,6 +139,37 @@ class Agendas_model extends CI_Model{
   
         }
     }
+
+    public function deletar($tabela = null, $condicao = null){
+        
+      $this->db->db_debug = FALSE;
+
+      if($tabela && is_array($condicao)){
+
+          $status = $this->db->delete($tabela, $condicao);
+
+          $error = $this->db->error();
+
+          if(! $status){
+              foreach($error as $code){
+                  if($code == 1451){
+
+                    $this->session->set_flashdata('erro', 'Esse registro não poderá ser excluido, pois está sendo utilizado em outra tabela!');
+
+                  }
+              }
+          }else{
+
+              return true;
+
+          }
+
+          $this->db->db_debug = TRUE;
+
+      }else{
+          return false;
+      }
+  }
 
     public function notificacoes($tabela = null, $condicao = null){
       if($tabela){

@@ -42,7 +42,7 @@
                 <li class="<?php  if($pagina == "listar-produtos"){ echo 'active'; } ?>"><a class="nav-link" href="<?php echo base_url('listar-produtos'); ?>"> Todos os produtos</a></li>
               </ul>
             </li>
-            <li class="dropdown <?php if($pagina == "listar-agendas"){ echo 'active'; } ?>">
+            <li class="dropdown <?php if($pagina == "agendas"){ echo 'active'; } ?>">
               <a href="<?php echo base_url('listar-agendas'); ?>" class="nav-link"><i class="fas fa-calendar-alt"></i><span>Agendas</span></a>
             </li>
             <li class="menu-header">Financeiro</li>

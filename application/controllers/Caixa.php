@@ -41,7 +41,8 @@ class Caixa extends CI_Controller {
             'clientes' => $this->model->clientes('clientes', array('cliente_ativo' => 1)),
             'servicos' => $this->model->servicos('servicos', array('servico_ativo' => 1)),
             'produtos' => $this->model->produtos('produtos', array('produto_ativo' => 1)),
-            'formulario' => true
+            'formulario' => true,
+            'plugin_editor' => true
         );
         
         $this->form_validation->set_rules('caixa_valor', 'Por favor, informe o valor', 'required');
@@ -78,6 +79,23 @@ class Caixa extends CI_Controller {
         }
         
     }
+
+    public function detalhes($caixa_id){
+
+        $dados = $this->model->get_by_id('caixa', array('caixa_id' => $caixa_id));
+
+        $data = array(
+            'titulo' => 'Mais informações',
+            'pagina' => 'historico',
+            'usuario' => $user = $this->ion_auth->user()->row(),
+            'caixa' => $this->model->get_by_id('caixa', array('caixa_id' => $caixa_id))
+        );
+
+        $this->load->view('layout/header', $data);
+        $this->load->view('caixa/detalhes-caixa');
+        $this->load->view('layout/footer');
+    }
+
 
 
 }

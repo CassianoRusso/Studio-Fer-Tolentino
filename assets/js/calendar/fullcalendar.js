@@ -1,9 +1,5 @@
 
 var data = $("#eventos").val();
-var today = new Date();
-year = today.getFullYear();
-month = today.getMonth();
-day = today.getDate();
 
 var calendar = $('#calendar').fullCalendar({
 	

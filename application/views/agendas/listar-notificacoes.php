@@ -2,13 +2,47 @@
     <?php foreach($notificacoes as $notificacao){ ?>
 
         <?php 
+            date_default_timezone_set('America/Sao_Paulo');
+
             if(empty($notificacao->agenda_notificacao)){ 
                 $exibir_notificacao = true;
+            }elseif($notificacao->agenda_notificacao == 1){
+                
+                $hora_atual = date('H:i');
+            
+                if($notificacao->agenda_horario_inicial >= $hora_atual){
+                    $tempo = gmdate('H:i', strtotime( $notificacao->agenda_horario_inicial ) - strtotime( $hora_atual ) );
+                    
+                    if($tempo <= '00:30'){
+                        $exibir_notificacao = true;
+                    } elseif($tempo <= '00:15'){
+                        $exibir_notificacao = true;
+                    }else{
+                        $exibir_notificacao = false;
+                    }
 
-            } elseif($notificacao->agenda_notificacao < 3){
-                $exibir_notificacao = true;
+                }else{
+                    $exibir_notificacao = false;
+                }
+
+                
+            } elseif($notificacao->agenda_notificacao == 2){
+                $hora_atual = date('H:i');
+            
+                if($notificacao->agenda_horario_inicial >= $hora_atual){
+                    $tempo = gmdate('H:i', strtotime( $notificacao->agenda_horario_inicial ) - strtotime( $hora_atual ) );
+                    
+                    if($tempo <= '00:15'){
+                        $exibir_notificacao = true;
+                    }else{
+                        $exibir_notificacao = false;
+                    }
+
+                }else{
+                    $exibir_notificacao = false;
+                }
             } else { 
-                $exibir_notificacao = false; 
+                $exibir_notificacao = false;
             } 
         ?>
 
