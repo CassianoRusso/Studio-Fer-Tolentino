@@ -37,7 +37,8 @@ CREATE TABLE `agenda` (
   `clientes_cliente_id` int(11) DEFAULT NULL,
   `servicos_servico_id` int(11) DEFAULT NULL,
   `agenda_notificacao` int(1) DEFAULT NULL,
-  `agenda_status_servico` int(1) NOT NULL
+  `agenda_status_servico` int(1) NOT NULL,
+  `agenda_status_pagamento`int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
