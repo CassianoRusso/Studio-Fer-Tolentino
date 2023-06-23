@@ -103,6 +103,41 @@ $(document).ready(function(){
     }
   });
 
+   // Formulário Agenda
+  $(document).on("click", "#valida-agenda", function(){
+    var assunto = $("#agenda_assunto").val();
+    var data = $("#agenda_data").val();
+    var h_inicial = $("#agenda_horario_inicial").val();
+    var h_final = $("#agenda_horario_final").val();
+
+    if(assunto == ''){
+      $("#agenda_assunto").focus();
+      return false;
+    }
+    if(data == ''){
+      $("#agenda_data").focus();
+      return false;
+    }
+    if(h_inicial == ''){
+      $("#agenda_horario_inicial").focus();
+      return false;
+    }
+    if(h_final == ''){
+      $("#agenda_horario_final").focus();
+      return false;
+    }
+  });
+
+  $(document).on("change", "#selecionar-servico .selectric", function(){
+    var op = $(this).find('option:selected').val();
+    
+    if(op == 1){
+      $('#selecionar-status-pagamento').show(); 
+    }else{
+      $('#selecionar-status-pagamento').hide(); 
+    }
+  });
+
   // Formulário Usuário
   $(document).on("click", "#valida-usuario", function(){
 

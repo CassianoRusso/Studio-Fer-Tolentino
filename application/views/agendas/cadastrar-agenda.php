@@ -42,7 +42,7 @@
                         </select>
                     </div>
 
-                    <div class="form-group col-4">
+                    <div id="selecionar-servico" class="form-group col-4">
                         <label>Serviço</label>
                         <select name="servicos_servico_id" class="form-control selectric" value="<?php echo set_value('servicos_servico_id'); ?>">
                           <option value="0">Selecione um serviço</option>
@@ -53,7 +53,7 @@
                         <input type="hidden" name="agenda_status_servico" value="0">
                     </div>
 
-                    <div class="form-group col-2">
+                    <div id="selecionar-status-pagamento" class="form-group col-2" style="display: none;">
                         <label>Status de pagamento</label>
                         <select name="agenda_status_pagamento" class="form-control selectric" value="<?php echo set_value('agenda_status_pagamento'); ?>">
                           <option value="0">Não pago</option>
@@ -64,18 +64,18 @@
 
                     <div class="form-group col-4">
                         <label>Data marcada</label>
-                        <input type="date" name="agenda_data" class="form-control" value="<?php echo set_value('agenda_data'); ?>">
+                        <input type="date" id="agenda_data" name="agenda_data" class="form-control" value="<?php echo set_value('agenda_data'); ?>">
                         <?php echo form_error('agenda_data', '<div class="form-text text-danger">', '</div>'); ?>
                     </div>
 
                     <div class="form-group col-4">
                         <label>Horário para iniciar</label>
-                        <input type="time" name="agenda_horario_inicial" class="form-control" value="<?php echo set_value('agenda_horario_inicial'); ?>">
+                        <input type="time" id="agenda_horario_inicial" name="agenda_horario_inicial" class="form-control" value="<?php echo set_value('agenda_horario_inicial'); ?>">
                         <?php echo form_error('agenda_horario_inicial', '<div class="form-text text-danger">', '</div>'); ?>
                     </div>
                     <div class="form-group col-4">
                         <label>Horário para terminar</label>
-                        <input type="time" name="agenda_horario_final" class="form-control" value="<?php echo set_value('agenda_horario_final'); ?>">
+                        <input type="time" id="agenda_horario_final" name="agenda_horario_final" class="form-control" value="<?php echo set_value('agenda_horario_final'); ?>">
                         <?php echo form_error('agenda_horario_final', '<div class="form-text text-danger">', '</div>'); ?>
                     </div>
                     

@@ -112,9 +112,6 @@ class Agendas extends CI_Controller{
             if($dados["servicos_servico_id"] == 0){
                 unset($dados["servicos_servico_id"]);
             }
-            if($dados["agenda_status_pagamento"] == 1){
-                $this->registrar_caixa($agenda_id);
-            }
 
             extract($dados);
             
@@ -122,6 +119,10 @@ class Agendas extends CI_Controller{
             
             if($this->model->editar('agenda', $dados, array('agenda_id' => $agenda_id))){
                 $this->session->set_flashdata('sucesso', 'Agenda atualizada com sucesso!');
+
+                if($dados["agenda_status_pagamento"] == 1){
+                    $this->registrar_caixa($agenda_id);
+                }
             }
             
             redirect(base_url("listar-agendas"));
@@ -233,7 +234,7 @@ class Agendas extends CI_Controller{
     public function registrar_caixa($agenda_id){
         date_default_timezone_set('America/Sao_Paulo');
 
-        $dados_agenda = $this->model->get_by_id('agenda', array('agenda_id' => $agenda_id));
+        $dados_agenda = $this->model->get_by_id('agenda', array('agenda_id' => $agenda_id));        
         $dados_servico = $this->model->get_by_id('servicos',array('servico_id' => $dados_agenda->servicos_servico_id));
         
         $caixa_valor = $dados_servico->servico_valor;
