@@ -44,9 +44,13 @@
         <div class="col-12">
           <div class="card">
             <div class="card-header justify-content-end">
-              <a href="<?php echo base_url('registrar-caixa'); ?>" class="btn btn-success">
-                  <i class="fa fa-plus"></i>
-                  <strong>Novo registro</strong>
+              <a href="<?php echo base_url('listar-agendas'); ?>" class="btn btn-info mr-2">
+                <i class="fa fa-calendar"></i>
+                <strong>Calendário</strong>
+              </a>
+              <a href="<?php echo base_url('cadastrar-agenda'); ?>" class="btn btn-success">
+                <i class="fa fa-plus"></i>
+                <strong>Agendar</strong>
               </a>
             </div>
             <div class="card-body">
@@ -55,19 +59,20 @@
                   <thead>
                     <tr>
                       <th class="text-center">#</th>
+                      <th>Assunto</th>
                       <th>Cliente</th>
-                      <th>Produto / Serviço</th>
-                      <th>Valor</th>
+                      <th>Serviço</th>
                       <th>Dia e Horário</th>
                       <th>Ação</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <?php foreach($caixa as $cx){ ?>
+                    <?php foreach ($agendas as $agenda) { ?>
                       <tr href="<?php echo base_url(); ?>">
-                        <td class="text-center col-1"><?php echo $cx->caixa_id; ?></td>
+                        <td class="text-center col-1"><?php echo $agenda->agenda_id; ?></td>
+                        <td class="col-3"><?php echo $agenda->agenda_assunto; ?></td>
                         <td class="col-3">
-                          <?php if(empty($cx->clientes_cliente_id)){ ?>
+                          <?php if(empty($agenda->clientes_cliente_id)){ ?>
                             <span class="row justify-content-center">
                               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="16" fill="currentColor" class="bi bi-dash-lg" viewBox="0 0 16 16">
                                 <path fill-rule="evenodd" d="M2 8a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11A.5.5 0 0 1 2 8Z"></path>
@@ -75,47 +80,35 @@
                             </span>
                           <?php }else{ ?>
                             <?php foreach($clientes as $cliente){ ?>
-                              <?php if($cx->clientes_cliente_id == $cliente->cliente_id){ ?>
+                              <?php if($agenda->clientes_cliente_id == $cliente->cliente_id){ ?>
                                 <div><?php echo $cliente->cliente_nome; ?></div>
                               <?php } ?>
                             <?php } ?>
                           <?php } ?>
                         </td>
                         <td class="col-3">
-                          <?php if(empty($cx->servicos_servico_id) && empty($cx->produtos_produto_id)){ ?>
-                            <?php if(empty($cx->caixa_servico_produto)){ ?>
-                              <span class="row justify-content-center">
+                        <?php if(empty($agenda->servicos_servico_id)){ ?>
+                            <span class="row justify-content-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="16" fill="currentColor" class="bi bi-dash-lg" viewBox="0 0 16 16">
-                                  <path fill-rule="evenodd" d="M2 8a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11A.5.5 0 0 1 2 8Z"></path>
+                                    <path fill-rule="evenodd" d="M2 8a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11A.5.5 0 0 1 2 8Z"></path>
                                 </svg>
-                              </span>
-                            <?php }else{ ?>
-                              <?php echo $cx->caixa_servico_produto == 1 ? '<strong>Serviço</strong>' : '<strong>Produto</strong>'; ?>
-                            <?php } ?>  
-                          <?php }elseif($cx->servicos_servico_id > 0){ ?>
+                            </span>
+                        <?php }else{ ?>
                             <small><strong>Serviço:</strong></small>
                             <?php foreach($servicos as $servico){ ?>
-                              <?php if($cx->servicos_servico_id == $servico->servico_id){ ?>
+                                <?php if($agenda->servicos_servico_id == $servico->servico_id){ ?>
                                 <div><?php echo $servico->servico_nome; ?></div>
-                              <?php } ?>
-                            <?php } ?>
-                          <?php }else{ ?>
-                            <small><strong>Produto:</strong></small>
-                            <?php foreach($produtos as $produto){ ?>
-                              <?php if($cx->produtos_produto_id == $produto->produto_id){ ?>
-                                <div><?php echo $produto->produto_nome; ?></div>
-                              <?php } ?>
-                            <?php } ?>
-                          <?php } ?>
+                                <?php } ?>
+                            <?php } ?>  
+                        <?php } ?>  
                         </td>
                         <td class="col-2">
-                          <strong class="<?php echo $cx->caixa_status > 0 ? 'text-success' : 'text-danger' ; ?>">
-                            <?php echo $cx->caixa_status > 0 ? 'R$ +'. $cx->caixa_valor : 'R$ '. $cx->caixa_valor ; ?>
-                          </strong>
+                            <?php echo formata_data_banco_sem_hora($agenda->agenda_data); ?><br>
+                            Das <strong><?php echo date('H:i', strtotime($agenda->agenda_horario_inicial)); ?></strong> 
+                            às <strong><?php echo date('H:i', strtotime($agenda->agenda_horario_final)); ?></strong>
                         </td>
-                        <td class="col-2"><?php echo formata_data_banco_com_hora($cx->caixa_data); ?></td>
                         <td class="col-2">
-                          <a href="<?php echo base_url('detalhes-caixa/'.$cx->caixa_id); ?>" class="btn btn-warning user-img-radious-style" style="line-height: 1.5; letter-spacing: 0;" data-toggle="tooltip" data-original-title="+ informações">
+                          <a href="<?php echo base_url('detalhes-agenda/'.$agenda->agenda_id); ?>" class="btn btn-warning user-img-radious-style" style="line-height: 1.5; letter-spacing: 0;" data-toggle="tooltip" data-original-title="+ informações">
                             <i class="fas fa-info"></i>
                           </a>
                         </td>

@@ -173,7 +173,7 @@ class Core_model extends CI_Model{
   public function diaria_servico($tabela = null, $condicao = null){
     if($tabela){
 
-      return $this->db->query(" SELECT * FROM $tabela WHERE DAY(caixa_data) = DAY(CURRENT_DATE()) AND MONTH(caixa_data) = MONTH(CURRENT_DATE()) AND YEAR(caixa_data) = YEAR(CURRENT_DATE()) AND servicos_servico_id > 0 ")->result();
+      return $this->db->query(" SELECT * FROM $tabela WHERE DAY(caixa_data) = DAY(CURRENT_DATE()) AND MONTH(caixa_data) = MONTH(CURRENT_DATE()) AND YEAR(caixa_data) = YEAR(CURRENT_DATE()) AND ( servicos_servico_id > 0 OR caixa_servico_produto = 1 ) ")->result();
 
     }else{
 
@@ -186,7 +186,7 @@ class Core_model extends CI_Model{
   public function mensal_servico($tabela = null){
     if($tabela){
       
-      return $this->db->query(" SELECT * FROM $tabela WHERE MONTH(caixa_data) = MONTH(CURRENT_DATE()) AND YEAR(caixa_data) = YEAR(CURRENT_DATE()) AND servicos_servico_id > 0 ")->result();
+      return $this->db->query(" SELECT * FROM $tabela WHERE MONTH(caixa_data) = MONTH(CURRENT_DATE()) AND YEAR(caixa_data) = YEAR(CURRENT_DATE()) AND ( servicos_servico_id > 0 OR caixa_servico_produto = 1 )")->result();
       
 
     }else{
@@ -200,7 +200,7 @@ class Core_model extends CI_Model{
   public function diaria_produto($tabela = null, $condicao = null){
     if($tabela){
 
-      return $this->db->query(" SELECT * FROM $tabela WHERE DAY(caixa_data) = DAY(CURRENT_DATE()) AND MONTH(caixa_data) = MONTH(CURRENT_DATE()) AND YEAR(caixa_data) = YEAR(CURRENT_DATE()) AND produtos_produto_id > 0 ")->result();
+      return $this->db->query(" SELECT * FROM $tabela WHERE DAY(caixa_data) = DAY(CURRENT_DATE()) AND MONTH(caixa_data) = MONTH(CURRENT_DATE()) AND YEAR(caixa_data) = YEAR(CURRENT_DATE()) AND ( produtos_produto_id > 0 OR caixa_servico_produto = 2 )")->result();
 
     }else{
 
@@ -213,7 +213,7 @@ class Core_model extends CI_Model{
   public function mensal_produto($tabela = null){
     if($tabela){
       
-      return $this->db->query(" SELECT * FROM $tabela WHERE MONTH(caixa_data) = MONTH(CURRENT_DATE()) AND YEAR(caixa_data) = YEAR(CURRENT_DATE()) AND produtos_produto_id > 0 ")->result();
+      return $this->db->query(" SELECT * FROM $tabela WHERE MONTH(caixa_data) = MONTH(CURRENT_DATE()) AND YEAR(caixa_data) = YEAR(CURRENT_DATE()) AND ( produtos_produto_id > 0 OR caixa_servico_produto = 2 )")->result();
       
 
     }else{

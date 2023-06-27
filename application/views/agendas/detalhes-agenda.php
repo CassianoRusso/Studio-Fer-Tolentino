@@ -28,10 +28,12 @@
                                         <i class="fas fa-check"></i>
                                     </button>
                                 <?php } ?>
-                                <a href="<?php echo base_url("editar-agenda/".$agenda->agenda_id); ?>" class="btn btn-info"
-                                    data-toggle="tooltip" data-original-title="Editar" >
-                                    <i class="fas fa-pencil-alt"></i>
-                                </a>
+                                <?php if($agenda->agenda_status_servico == 0){ ?>
+                                    <a href="<?php echo base_url("editar-agenda/".$agenda->agenda_id); ?>" class="btn btn-info"
+                                        data-toggle="tooltip" data-original-title="Editar" >
+                                        <i class="fas fa-pencil-alt"></i>
+                                    </a>
+                                <?php } ?>
                                 <a href="excluir" class="btn btn-danger" data-toggle="modal"
                                     data-target="#agenda-<?php echo $agenda->agenda_id; ?>"
                                     data-original-title="Excluir">
@@ -118,14 +120,14 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalCenterTitle">Tem certeza que deseja excluir esse agendamento?
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Atenção! Isso pode interferir diretamente no caixa.
                     </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    Para excluir clique em "Confirmar".
+                    Se realmente deseja excluir clique em "Confirmar".
                 </div>
                 <div class="modal-footer bg-whitesmoke br">
                     <a href="<?php echo base_url('deletar-agenda/'.$agenda->agenda_id); ?>"

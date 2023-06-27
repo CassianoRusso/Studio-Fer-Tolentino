@@ -46,6 +46,7 @@ class Caixa_model extends CI_Model{
           if(is_array($condicao)){
     
             $this->db->where($condicao);
+            $this->db->order_by('cliente_nome', 'ASC');
             
           }
           return $this->db->get($tabela)->result();
@@ -63,6 +64,7 @@ class Caixa_model extends CI_Model{
             if(is_array($condicao)){
       
               $this->db->where($condicao);
+              $this->db->order_by('servico_nome', 'ASC');
               
             }
             return $this->db->get($tabela)->result();
@@ -80,6 +82,7 @@ class Caixa_model extends CI_Model{
             if(is_array($condicao)){
       
               $this->db->where($condicao);
+              $this->db->order_by('produto_nome', 'ASC');
               
             }
             return $this->db->get($tabela)->result();

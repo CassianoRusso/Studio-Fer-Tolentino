@@ -51,6 +51,9 @@ class Caixa extends CI_Controller {
 
             $dados = array_map('trim', $_POST);
             
+            if($dados["caixa_servico_produto"] == 0){
+                unset($dados["caixa_servico_produto"]);
+            }
             if($dados["clientes_cliente_id"] == 0){
                 unset($dados["clientes_cliente_id"]);
             }

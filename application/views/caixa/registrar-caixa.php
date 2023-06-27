@@ -22,17 +22,17 @@
                 <div class="form-row">
                   <div id="selecionar-produto-servico" class="form-group col-4">
                     <label>Registrar um Produto/Serviço <small>(opcional)</small></label>
-                    <select class="form-control selectric">
+                    <select class="form-control selectric" name="caixa_servico_produto" value="<?php echo set_value('caixa_servico_produto'); ?>">
                       <option value="0">Selecione uma opção</option>
                       <option value="1">Serviço</option>
                       <option value="2">Produto</option>
                     </select>
                   </div>
 
-                  <div id="selecionar-servico" class="form-group col-4" style="display: none;">
+                  <div id="selecionar-servico" class="form-group col-4 flex-column justify-content-between d-none">
                     <label>Serviços</label>
                     
-                    <select name="servicos_servico_id" class="form-control selectric" value="<?php echo set_value('servicos_servico_id'); ?>">
+                    <select name="servicos_servico_id" class="form-control select2" value="<?php echo set_value('servicos_servico_id'); ?>">
                       <option value="0">Selecione um serviço</option>
                       <?php foreach($servicos as $servico){ ?>  
                         <option value="<?php echo $servico->servico_id; ?>" data-preco="<?php echo $servico->servico_valor; ?>"><?php echo $servico->servico_nome; ?></option>
@@ -40,10 +40,10 @@
                     </select>
                   </div>
 
-                  <div id="selecionar-produto" class="form-group col-4" style="display: none;">
+                  <div id="selecionar-produto" class="form-group col-4 flex-column justify-content-between d-none">
                     <label>Produtos</label>
                     
-                    <select name="produtos_produto_id" class="form-control selectric" value="<?php echo set_value('produtos_produto_id'); ?>">
+                    <select name="produtos_produto_id" class="form-control select2" value="<?php echo set_value('produtos_produto_id'); ?>">
                       <option value="0">Selecione um produto</option>
                       <?php foreach($produtos as $produto){ ?>  
                         <option value="<?php echo $produto->produto_id; ?>" data-preco="<?php echo $produto->produto_valor; ?>"><?php echo $produto->produto_nome; ?></option>
@@ -77,7 +77,7 @@
                   <div class="form-group col-4">
                     <label>Cliente <small>(opcional)</small></label>
                     
-                    <select name="clientes_cliente_id" class="form-control selectric" value="<?php echo set_value('clientes_cliente_id'); ?>">
+                    <select name="clientes_cliente_id" class="form-control select2" value="<?php echo set_value('clientes_cliente_id'); ?>">
                       <option value="0">Selecione um cliente</option>
                       <?php foreach($clientes as $cliente){ ?>  
                         <option value="<?php echo $cliente->cliente_id; ?>"><?php echo $cliente->cliente_nome; ?></option>

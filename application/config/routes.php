@@ -72,6 +72,7 @@ $route['deletar-produto/(:num)'] = 'Produtos/deletar/$1';
 
 // Agendas - Gerenciamento
 $route['listar-agendas'] = 'Agendas/index';
+$route['tabela-agendas'] = 'Agendas/tabela_agendas';
 $route['cadastrar-agenda'] = 'Agendas/cadastrar';
 $route['editar-agenda/(:num)'] = 'Agendas/editar/$1';
 $route['detalhes-agenda/(:num)'] = 'Agendas/detalhes/$1';

@@ -76,6 +76,7 @@ class Agendas_model extends CI_Model{
             if(is_array($condicao)){
       
               $this->db->where($condicao);
+              $this->db->order_by('cliente_nome', 'ASC');
               
             }
             return $this->db->get($tabela)->result();
@@ -93,6 +94,7 @@ class Agendas_model extends CI_Model{
             if(is_array($condicao)){
       
               $this->db->where($condicao);
+              $this->db->order_by('servico_nome', 'ASC');
               
             }
             return $this->db->get($tabela)->result();
@@ -203,7 +205,7 @@ class Agendas_model extends CI_Model{
 
     public function finalizar_servico($agenda_id){
 
-      if($this->db->query(" UPDATE agenda SET agenda_status_servico = 1 WHERE agenda_id = $agenda_id ")){
+      if($this->db->query(" UPDATE agenda SET agenda_status_servico = 1, agenda_status_pagamento = 1 WHERE agenda_id = $agenda_id ")){
 
         return true;
 

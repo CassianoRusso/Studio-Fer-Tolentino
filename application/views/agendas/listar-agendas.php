@@ -43,6 +43,10 @@
         <div class="col-12">
           <div class="card">
             <div class="card-header justify-content-end">
+              <a href="<?php echo base_url('tabela-agendas'); ?>" class="btn btn-info mr-2">
+                <i class="fa fa-table"></i>
+                <strong>Tabela</strong>
+              </a>
               <a href="<?php echo base_url('cadastrar-agenda'); ?>" class="btn btn-success">
                 <i class="fa fa-plus"></i>
                 <strong>Agendar</strong>

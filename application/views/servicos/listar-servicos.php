@@ -43,6 +43,12 @@
       <div class="row">
         <div class="col-12">
           <div class="card">
+            <div class="card-header justify-content-end">
+              <a href="<?php echo base_url('cadastrar-servico'); ?>" class="btn btn-success">
+                  <i class="fa fa-plus"></i>
+                  <strong>Novo Serviço</strong>
+              </a>
+            </div>
             <div class="card-body">
               <div class="table-responsive">
                 <table class="table table-striped dataTable no-footer" id="dataTable" style="width:100%;">

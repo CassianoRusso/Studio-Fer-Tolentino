@@ -35,6 +35,7 @@
 
   <?php if(isset($formulario)){ ?>
     <script src="<?php echo base_url('assets/bundles/jquery-selectric/jquery.selectric.min.js'); ?>"></script>
+    <script src="<?php echo base_url('assets/bundles/select2/dist/js/select2.full.min.js'); ?>"></script>
     <!-- <script src="<?php echo base_url('assets/js/page/forms-advanced-forms.js'); ?>"></script> -->
     <script src="<?php echo base_url('assets/js/mask/app.js'); ?>"></script>
     <script src="<?php echo base_url('assets/js/mask/jquery.mask.min.js'); ?>"></script>

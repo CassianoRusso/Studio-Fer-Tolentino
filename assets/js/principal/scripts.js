@@ -70,24 +70,33 @@ $(document).ready(function(){
     var op = $(this).find('option:selected').val();
 
     if(op == 1){
-      $("#selecionar-servico").show();
-      $("#selecionar-servico .selectric option:first").attr("selected", false);
-      $("#selecionar-produto").hide();
-      $("#selecionar-produto .selectric option:first").attr("selected", true);
+      $("#selecionar-servico").removeClass('d-none');
+      $("#selecionar-servico").addClass('d-flex');
+      $("#selecionar-servico .select2 option:first").attr("selected", false);
+      $("#selecionar-produto").removeClass('d-flex');
+      $("#selecionar-produto").addClass('d-none');
+      $("#selecionar-produto .select2 option:first").attr("selected", true);
     } else if (op == 2){
-      $("#selecionar-produto").show();
-      $("#selecionar-produto .selectric option:first").attr("selected", false);
-      $("#selecionar-servico").hide();
-      $("#selecionar-servico .selectric option:first").attr("selected", true);
+      $("#selecionar-produto").removeClass('d-none');
+      $("#selecionar-produto").addClass('d-flex');
+      $("#selecionar-produto .select2 option:first").attr("selected", false);
+      $("#selecionar-servico").removeClass('d-flex');
+      $("#selecionar-servico").addClass('d-none');
+      $("#selecionar-servico .select2 option:first").attr("selected", true);
     } else {
-      $("#selecionar-servico").hide();
-      $("#selecionar-servico .selectric option:first").attr("selected", true);
-      $("#selecionar-produto").hide();
-      $("#selecionar-produto .selectric option:first").attr("selected", true);
+      $("#selecionar-servico").removeClass('d-flex');
+      $("#selecionar-servico").addClass('d-none');
+      $("#selecionar-servico .select2 option:first").attr("selected", true);
+      $("#selecionar-produto").removeClass('d-flex');
+      $("#selecionar-produto").addClass('d-none');
+      $("#selecionar-produto .select2 option:first").attr("selected", true);
+      $('#caixa_valor').val('');
+
     }
   });
 
-  $(document).on("change", "#selecionar-servico .selectric", function(){
+  $(document).on("change", "#selecionar-servico .select2", function(){
+
     var preco = $(this).find('option:selected').attr('data-preco');
 
     if(preco != undefined){
@@ -95,7 +104,7 @@ $(document).ready(function(){
     }
   });
 
-  $(document).on("change", "#selecionar-produto .selectric", function(){
+  $(document).on("change", "#selecionar-produto .select2", function(){
     var preco = $(this).find('option:selected').attr('data-preco');
 
     if(preco != undefined){
@@ -128,10 +137,10 @@ $(document).ready(function(){
     }
   });
 
-  $(document).on("change", "#selecionar-servico .selectric", function(){
+  $(document).on("change", "#selecionar-servico .select2", function(){
     var op = $(this).find('option:selected').val();
     
-    if(op == 1){
+    if(op > 0){
       $('#selecionar-status-pagamento').show(); 
     }else{
       $('#selecionar-status-pagamento').hide(); 

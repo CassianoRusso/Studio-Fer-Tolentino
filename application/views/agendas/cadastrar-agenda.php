@@ -34,7 +34,7 @@
                     </div>
                     <div class="form-group col-6">
                         <label>Cliente</label>
-                        <select name="clientes_cliente_id" class="form-control selectric" value="<?php echo set_value('clientes_cliente_id'); ?>">
+                        <select name="clientes_cliente_id" class="form-control select2" value="<?php echo set_value('clientes_cliente_id'); ?>">
                           <option value="0">Selecione um cliente</option>
                           <?php foreach($clientes as $cliente){ ?>  
                             <option value="<?php echo $cliente->cliente_id; ?>"><?php echo $cliente->cliente_nome; ?></option>
@@ -44,7 +44,7 @@
 
                     <div id="selecionar-servico" class="form-group col-4">
                         <label>Serviço</label>
-                        <select name="servicos_servico_id" class="form-control selectric" value="<?php echo set_value('servicos_servico_id'); ?>">
+                        <select name="servicos_servico_id" class="form-control select2" value="<?php echo set_value('servicos_servico_id'); ?>">
                           <option value="0">Selecione um serviço</option>
                           <?php foreach($servicos as $servico){ ?>  
                             <option value="<?php echo $servico->servico_id; ?>"><?php echo $servico->servico_nome; ?></option>

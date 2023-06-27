@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 21/06/2023 às 00:26
+-- Tempo de geração: 27/06/2023 às 23:49
 -- Versão do servidor: 10.4.27-MariaDB
 -- Versão do PHP: 7.4.33
 
@@ -38,7 +38,7 @@ CREATE TABLE `agenda` (
   `servicos_servico_id` int(11) DEFAULT NULL,
   `agenda_notificacao` int(1) DEFAULT NULL,
   `agenda_status_servico` int(1) NOT NULL,
-  `agenda_status_pagamento`int(1) NOT NULL
+  `agenda_status_pagamento` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -108,13 +108,6 @@ CREATE TABLE `login_attempts` (
   `time` int(11) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
---
--- Despejando dados para a tabela `login_attempts`
---
-
-INSERT INTO `login_attempts` (`id`, `ip_address`, `login`, `time`) VALUES
-(1, '2804:128:9ae5:1300:f8d2:8f72:3504:b3f', 'cassianorusso002@gmail.com', 1686571544);
-
 -- --------------------------------------------------------
 
 --
@@ -176,7 +169,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `email`, `activation_selector`, `activation_code`, `forgotten_password_selector`, `forgotten_password_code`, `forgotten_password_time`, `remember_selector`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `company`, `phone`) VALUES
-(1, '::1', 'Cassiano22', '$2y$10$e1Wj3agwPPXiKFVIpGXKnuu2uhf.NUe1WJH/h.NLF4LUW3zIANWQa', 'cassianorusso02@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1640691954, 1687296962, 1, 'Cassiano', 'Tolentino Russo', NULL, NULL);
+(1, '::1', 'Cassiano', '$2y$10$XsD4ITFoTQ4iNcteQWpEpuompuFjpjz7e6Sc24WBIwTPeChdy4NZO', 'cassianorusso02@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1687376830, 1687863665, 1, 'Cassiano', 'Russo', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -191,39 +184,15 @@ CREATE TABLE `users_groups` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
+-- Despejando dados para a tabela `users_groups`
+--
+
+INSERT INTO `users_groups` (`id`, `user_id`, `group_id`) VALUES
+(1, 1, 1);
+
+--
 -- Índices para tabelas despejadas
 --
-
---
--- Índices de tabela `groups`
---
-ALTER TABLE `groups`
-  ADD PRIMARY KEY (`id`);
-
---
--- Índices de tabela `login_attempts`
---
-ALTER TABLE `login_attempts`
-  ADD PRIMARY KEY (`id`);
-
---
--- Índices de tabela `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `uc_email` (`email`),
-  ADD UNIQUE KEY `uc_activation_selector` (`activation_selector`),
-  ADD UNIQUE KEY `uc_forgotten_password_selector` (`forgotten_password_selector`),
-  ADD UNIQUE KEY `uc_remember_selector` (`remember_selector`);
-
---
--- Índices de tabela `users_groups`
---
-ALTER TABLE `users_groups`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `uc_users_groups` (`user_id`,`group_id`),
-  ADD KEY `fk_users_groups_users1_idx` (`user_id`),
-  ADD KEY `fk_users_groups_groups1_idx` (`group_id`);
 
 --
 -- Índices de tabela `agenda`
@@ -250,6 +219,18 @@ ALTER TABLE `clientes`
   ADD PRIMARY KEY (`cliente_id`);
 
 --
+-- Índices de tabela `groups`
+--
+ALTER TABLE `groups`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Índices de tabela `login_attempts`
+--
+ALTER TABLE `login_attempts`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Índices de tabela `produtos`
 --
 ALTER TABLE `produtos`
@@ -262,32 +243,27 @@ ALTER TABLE `servicos`
   ADD PRIMARY KEY (`servico_id`);
 
 --
--- AUTO_INCREMENT para tabelas despejadas
---
-
---
--- AUTO_INCREMENT de tabela `groups`
---
-ALTER TABLE `groups`
-  MODIFY `id` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT de tabela `login_attempts`
---
-ALTER TABLE `login_attempts`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT de tabela `users`
+-- Índices de tabela `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `uc_email` (`email`),
+  ADD UNIQUE KEY `uc_activation_selector` (`activation_selector`),
+  ADD UNIQUE KEY `uc_forgotten_password_selector` (`forgotten_password_selector`),
+  ADD UNIQUE KEY `uc_remember_selector` (`remember_selector`);
 
 --
--- AUTO_INCREMENT de tabela `users_groups`
+-- Índices de tabela `users_groups`
 --
 ALTER TABLE `users_groups`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `uc_users_groups` (`user_id`,`group_id`),
+  ADD KEY `fk_users_groups_users1_idx` (`user_id`),
+  ADD KEY `fk_users_groups_groups1_idx` (`group_id`);
+
+--
+-- AUTO_INCREMENT para tabelas despejadas
+--
 
 --
 -- AUTO_INCREMENT de tabela `agenda`
@@ -308,6 +284,18 @@ ALTER TABLE `clientes`
   MODIFY `cliente_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT de tabela `groups`
+--
+ALTER TABLE `groups`
+  MODIFY `id` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de tabela `login_attempts`
+--
+ALTER TABLE `login_attempts`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT de tabela `produtos`
 --
 ALTER TABLE `produtos`
@@ -320,16 +308,20 @@ ALTER TABLE `servicos`
   MODIFY `servico_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- Restrições para tabelas despejadas
+-- AUTO_INCREMENT de tabela `users`
 --
+ALTER TABLE `users`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
--- Restrições para tabelas `users_groups`
+-- AUTO_INCREMENT de tabela `users_groups`
 --
 ALTER TABLE `users_groups`
-  ADD CONSTRAINT `fk_users_groups_groups1` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_users_groups_users1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
-COMMIT;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- Restrições para tabelas despejadas
+--
 
 --
 -- Restrições para tabelas `agenda`
@@ -345,6 +337,13 @@ ALTER TABLE `caixa`
   ADD CONSTRAINT `fk_caixa_clientes1` FOREIGN KEY (`clientes_cliente_id`) REFERENCES `clientes` (`cliente_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_caixa_produtos1` FOREIGN KEY (`produtos_produto_id`) REFERENCES `produtos` (`produto_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_caixa_servicos` FOREIGN KEY (`servicos_servico_id`) REFERENCES `servicos` (`servico_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Restrições para tabelas `users_groups`
+--
+ALTER TABLE `users_groups`
+  ADD CONSTRAINT `fk_users_groups_groups1` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_users_groups_users1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

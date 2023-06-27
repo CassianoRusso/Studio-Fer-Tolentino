@@ -17,19 +17,35 @@ class Agendas extends CI_Controller{
 
     public function index(){
         $data = array(
-            'titulo' => 'Lista de Agendamentos',
+            'titulo' => 'Agendamentos',
             'pagina' => 'agendas',
             'usuario' => $user = $this->ion_auth->user()->row(),
             'agendas' => $this->model->agenda('agenda'),
             'servicos' => $this->model->servicos('servicos', array('servico_ativo' => 1)),
             'clientes' => $this->model->clientes('clientes', array('cliente_ativo' => 1)),
-            'datatables' => true,
             'plugin_calendar' => true
         );
 
         $this->load->view('layout/header', $data);
         $this->load->view('agendas/listar-agendas', $data);
         $this->load->view('layout/footer', $data);
+
+    }
+
+    public function tabela_agendas(){
+        $data = array(
+            'titulo' => 'Agendamentos',
+            'pagina' => 'agendas',
+            'usuario' => $user = $this->ion_auth->user()->row(),
+            'agendas' => $this->model->agenda('agenda'),
+            'servicos' => $this->model->servicos('servicos', array('servico_ativo' => 1)),
+            'clientes' => $this->model->clientes('clientes', array('cliente_ativo' => 1)),
+            'datatables' => true
+        );
+
+        $this->load->view('layout/header', $data);
+        $this->load->view('agendas/tabela-agendas');
+        $this->load->view('layout/footer');
 
     }
 
@@ -66,7 +82,7 @@ class Agendas extends CI_Controller{
             
             if($this->model->cadastrar('agenda', $dados)){
                 $this->session->set_flashdata('sucesso', 'Horário agendado com sucesso!');
-                
+               
                 if($dados["agenda_status_pagamento"] == 1){
                     $agenda_id = $this->model->agenda_cadastrada('agenda');
                     $this->registrar_caixa($agenda_id->agenda_id);
@@ -115,8 +131,6 @@ class Agendas extends CI_Controller{
 
             extract($dados);
             
-            $dados["agenda_descricao"] = ucfirst($agenda_descricao);
-            
             if($this->model->editar('agenda', $dados, array('agenda_id' => $agenda_id))){
                 $this->session->set_flashdata('sucesso', 'Agenda atualizada com sucesso!');
 
@@ -137,7 +151,8 @@ class Agendas extends CI_Controller{
     public function deletar($agenda_id){
 
         if($this->model->deletar('agenda', array('agenda_id' => $agenda_id))){
-            $this->session->set_flashdata('sucesso', 'agenda excluído com sucesso!');
+            $this->model->deletar('caixa', array('agenda_agenda_id ' => $agenda_id));
+            $this->session->set_flashdata('sucesso', 'Agenda excluída com sucesso!');
         }
 
         redirect(base_url('listar-agendas'));
@@ -202,26 +217,9 @@ class Agendas extends CI_Controller{
         $dados_servico = $this->model->get_by_id('servicos',array('servico_id' => $dados_agenda->servicos_servico_id));
         
         if($dados_agenda->agenda_status_pagamento == 0){
-            $caixa_valor = $dados_servico->servico_valor;
-            $caixa_data = date('Y-m-d H:i');
-            $caixa_status = 1;
-            $servicos_servico_id = $dados_agenda->servicos_servico_id;
-            $clientes_cliente_id = $dados_agenda->clientes_cliente_id;
-            
-            $dados = array(
-                'caixa_valor' => $caixa_valor,
-                'caixa_data' => $caixa_data,
-                'caixa_status' => $caixa_status,
-                'servicos_servico_id' => $servicos_servico_id,
-                'clientes_cliente_id' => $clientes_cliente_id
-            );    
-        }
-
-        if(isset($dados)){
-            if($this->model->cadastrar('caixa', $dados)){
-                $this->model->finalizar_servico($agenda_id);
-                $this->session->set_flashdata('sucesso', 'Serviço finalizado e valor registrado no caixa!');
-            }
+            $this->registrar_caixa($agenda_id);
+            $this->model->finalizar_servico($agenda_id);
+            $this->session->set_flashdata('sucesso', 'Serviço finalizado e valor registrado no caixa!');
         }else{
             $this->model->finalizar_servico($agenda_id);
             $this->session->set_flashdata('sucesso', 'Serviço finalizado!');
@@ -234,25 +232,50 @@ class Agendas extends CI_Controller{
     public function registrar_caixa($agenda_id){
         date_default_timezone_set('America/Sao_Paulo');
 
-        $dados_agenda = $this->model->get_by_id('agenda', array('agenda_id' => $agenda_id));        
-        $dados_servico = $this->model->get_by_id('servicos',array('servico_id' => $dados_agenda->servicos_servico_id));
+        $caixa_agenda = $this->model->get_by_id('caixa', array('agenda_agenda_id' => $agenda_id));
         
-        $caixa_valor = $dados_servico->servico_valor;
-        $caixa_data = date('Y-m-d H:i');
-        $caixa_status = 1;
-        $servicos_servico_id = $dados_agenda->servicos_servico_id;
-        $clientes_cliente_id = $dados_agenda->clientes_cliente_id;
-        
-        $dados = array(
-            'caixa_valor' => $caixa_valor,
-            'caixa_data' => $caixa_data,
-            'caixa_status' => $caixa_status,
-            'servicos_servico_id' => $servicos_servico_id,
-            'clientes_cliente_id' => $clientes_cliente_id
-        );    
-        
-        if($this->model->cadastrar('caixa', $dados)){
-            return true;
+        if($caixa_agenda){
+            $dados_agenda = $this->model->get_by_id('agenda', array('agenda_id' => $agenda_id));        
+            $dados_servico = $this->model->get_by_id('servicos',array('servico_id' => $dados_agenda->servicos_servico_id));
+            
+            $caixa_valor = $dados_servico->servico_valor;
+            $caixa_status = 1;
+            $servicos_servico_id = $dados_agenda->servicos_servico_id;
+            $clientes_cliente_id = $dados_agenda->clientes_cliente_id;
+            
+            $dados = array(
+                'caixa_valor' => $caixa_valor,
+                'caixa_status' => $caixa_status,
+                'servicos_servico_id' => $servicos_servico_id,
+                'clientes_cliente_id' => $clientes_cliente_id,
+                'agenda_agenda_id' => $agenda_id
+            );    
+            
+            if($this->model->editar('caixa', $dados, array('caixa_id' => $caixa_agenda->caixa_id))){
+                return true;
+            }
+        }else{
+            $dados_agenda = $this->model->get_by_id('agenda', array('agenda_id' => $agenda_id));        
+            $dados_servico = $this->model->get_by_id('servicos',array('servico_id' => $dados_agenda->servicos_servico_id));
+            
+            $caixa_valor = $dados_servico->servico_valor;
+            $caixa_data = date('Y-m-d H:i');
+            $caixa_status = 1;
+            $servicos_servico_id = $dados_agenda->servicos_servico_id;
+            $clientes_cliente_id = $dados_agenda->clientes_cliente_id;
+            
+            $dados = array(
+                'caixa_valor' => $caixa_valor,
+                'caixa_data' => $caixa_data,
+                'caixa_status' => $caixa_status,
+                'servicos_servico_id' => $servicos_servico_id,
+                'clientes_cliente_id' => $clientes_cliente_id,
+                'agenda_agenda_id' => $agenda_id
+            );    
+            
+            if($this->model->cadastrar('caixa', $dados)){
+                return true;
+            }
         }
         
     }
